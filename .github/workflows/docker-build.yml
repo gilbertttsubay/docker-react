@@ -28,6 +28,8 @@ jobs:
       with:
         path: ~/.docker/cache
         key: ${{ runner.os }}-docker-cache-dockerfiledev
+        restore-keys: |
+          ${{ runner.os }}-docker-cache-dockerfiledev
 
     - name: run tests
       run: |
