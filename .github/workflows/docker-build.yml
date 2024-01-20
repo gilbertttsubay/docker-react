@@ -15,23 +15,25 @@ jobs:
       with:
         path: ~/.docker/cache
         key: ${{ runner.os }}-docker-cache-dockerfiledev
+
     - name: Build Docker
       run: |
         docker buildx build -t gilbertttsubay/docker-react:latest -f Dockerfile.dev .
-
-  run-test-docker:
-    needs: build-docker
-    runs-on: ubuntu-latest
-    steps:
-    - name: Using Cache
-      uses: actions/cache@v2
-      with:
-        path: ~/.docker/cache
-        key: ${{ runner.os }}-docker-cache-dockerfiledev
-        restore-keys: |
-          ${{ runner.os }}-docker-cache-dockerfiledev
-
-    - name: run tests
+    - name: Docker run test
       run: |
         docker run -e CI=true gilbertttsubay/docker-react:latest npm run test
+
+    - name: Generate deployment package
+      run: zip -r deploy.zip . -x '*.git*'
+
+    - name: Deploy to EB
+      uses: einaregilsson/beanstalk-deploy@v21
+      with:
+        aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        application_name: frontend
+        environment_name: Frontend-env
+        version_label: 1
+        region: us-east-1
+        deployment_package: deploy.zip
 
