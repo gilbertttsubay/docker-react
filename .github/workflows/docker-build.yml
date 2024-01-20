@@ -7,13 +7,28 @@ jobs:
   build-docker:
     runs-on: ubuntu-latest
     steps:
-
     - name: Checkout code
       uses: actions/checkout@v4
+
+    - name: Cache Build Docker Dockerfile.dev
+      uses: actions/cache@v2
+      with:
+        path: ~/.docker/cache
+        key: ${{ runner.os }}-docker-cache-dockerfiledev
     - name: Build Docker
       run: |
         docker buildx build -t gilbertttsubay/docker-react:latest -f Dockerfile.dev .
-    - name: Docker run test
+
+  run-test-docker:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Using Cache
+      uses: actions/cache@v2
+      with:
+        path: ~/.docker/cache
+        key: ${{ runner.os }}-docker-cache-dockerfiledev
+
+    - name: run tests
       run: |
         docker run -e CI=true gilbertttsubay/docker-react:latest npm run test
 
