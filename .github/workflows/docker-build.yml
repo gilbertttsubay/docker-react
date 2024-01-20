@@ -7,6 +7,9 @@ jobs:
   build-docker:
     runs-on: ubuntu-latest
     steps:
+
+    - name: Checkout code
+      uses: actions/checkout@v4
     - name: Build Docker
       run: |
         docker buildx build -t gilbertttsubay/docker-react -f Dockerfile.dev .
