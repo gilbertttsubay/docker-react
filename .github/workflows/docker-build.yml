@@ -20,6 +20,7 @@ jobs:
         docker buildx build -t gilbertttsubay/docker-react:latest -f Dockerfile.dev .
 
   run-test-docker:
+    needs: build-docker
     runs-on: ubuntu-latest
     steps:
     - name: Using Cache
