@@ -9,5 +9,5 @@ jobs:
     steps:
     - name: Build Docker
       run: |
-        docker buildx build -t gilbertttsubay/docker-react -f Dockerfile.dev
+        docker buildx build -t gilbertttsubay/docker-react -f Dockerfile.dev .
 
