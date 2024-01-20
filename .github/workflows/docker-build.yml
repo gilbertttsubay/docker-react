@@ -12,5 +12,8 @@ jobs:
       uses: actions/checkout@v4
     - name: Build Docker
       run: |
-        docker buildx build -t gilbertttsubay/docker-react -f Dockerfile.dev .
+        docker buildx build -t gilbertttsubay/docker-react:latest -f Dockerfile.dev .
+    - name: Docker run test
+      run: |
+        docker run -e CI=true gilbertttsubay/docker-react:latest npm run test
 
