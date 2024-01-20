@@ -1,0 +1,13 @@
+name: Docker build
+on:
+  push:
+    branches:
+    - "master"
+jobs:
+  build-docker:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Build Docker
+      run: |
+        docker build -t gilbertttsubay/docker-react -f Dockerfile.dev
+
